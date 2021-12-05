@@ -27,7 +27,8 @@ error=>{
     if(status == 302) return router.push('/login?msg=Please Login')
     if(status == 403 && !(error.response.error.isrefTokenError)) return store.commit('setError' , error.response.error.msg)
     if(status == 400){
-        return store.commit('setError' , error.response.data.error.msg)
+         store.commit('setError' , error.response.data.error.msg)
+         return Promise.reject(error.response)
     } 
     if(error.response.status == 403 && error.response.error.isrefTokenError) return router.push('/login');
 

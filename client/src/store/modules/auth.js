@@ -24,20 +24,21 @@ const actions = {
             }
         })
         .catch(err=>{
-            console.log(err)
+            router.push(`/login?err =${err.data.error.msg}`)
         }) 
     },
     logOutUser({commit}){
         axios.get('/auth/logout')
         .then(res=>{
             if(res){
+                localStorage.removeItem('auth_data')
                 commit('clearState')
                 router.push(`/?msg=${res.data.success.msg}`)
             }
         }).catch(err=>{
             console.log(err)
         })
-    }
+    },
 }
 
 const mutations = {
@@ -47,6 +48,7 @@ const mutations = {
         state.isLoggedIn = true
         state.access_token = response.data.auth.accessToken
         state.refresh_token = response.data.auth.refreshToken
+        localStorage.setItem('auth_data' , JSON.stringify(state));
     },
     clearState : (state)=>{
         state.user = {},
@@ -54,6 +56,16 @@ const mutations = {
         state.access_token = '';
         state.refresh_token = '';
 
+    },
+    syncLocalStorage : (state) => {
+       const authData = JSON.parse(localStorage.getItem('auth_data'));
+       if(authData) {
+        state.user = authData.user;
+        state.isLoggedIn = authData.isLoggedIn;
+        state.access_token = authData.access_token;
+        state.refresh_token = authData.refresh_token;
+       }
+       
     }
 }
 

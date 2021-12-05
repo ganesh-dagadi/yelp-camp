@@ -26,6 +26,7 @@
 
 <script>
 import {mapGetters , mapActions} from 'vuex'
+
 export default {
   computed : mapGetters(['loggedInUser' , 'isLoggedIn']),
   methods:{
@@ -33,6 +34,9 @@ export default {
     logoutClick(){
       this.logOutUser()
     }
+  },
+  beforeCreate(){
+    this.$store.commit('syncLocalStorage')
   }
 }
 </script>

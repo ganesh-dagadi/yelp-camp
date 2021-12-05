@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <p>{{msg}}</p>
-    <h1> Home </h1>
+    <h1> Not found </h1>
   </div>
 </template>
 
@@ -9,9 +9,9 @@
 // @ is an alias to /src
 
 export default {
-  name: 'Home',
+  name: 'UserIndex',
   data(){
-    return{
+    return {
       msg : this.$route.query.msg
     }
   }
