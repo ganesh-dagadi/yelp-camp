@@ -7,11 +7,11 @@ import axios from 'axios'
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
-axios.interceptors.request.use(config=>{
-    config.headers.access_token = store.state.auth.access_token;
-    config.headers.refresh_token = store.state.auth.refresh_token;
-    return config
-})
+// axios.interceptors.request.use(config=>{
+//     config.headers.access_token = store.state.auth.access_token;
+//     config.headers.refresh_token = store.state.auth.refresh_token;
+//     return config
+// })
 
 axios.interceptors.response.use(response=>{
     if(response.status == 200){
@@ -21,6 +21,7 @@ axios.interceptors.response.use(response=>{
     }
 } ,
 error=>{
+    console.log(error.response)
     const status = error.response.status;
     if(status == 500) return store.commit('setError' , error.response.error.msg)
     if(status == 404) return router.push('/notfound')

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import CampsIndex from '../views/camps/Index.vue'
+import CampsCreate from '../views/camps/Create.vue'
 import CampsShow from '../views/camps/Show.vue'
 import CampsUpdate from '../views/camps/Update.vue'
 import Login from '../views/Login.vue'
@@ -21,6 +22,11 @@ const routes = [
     path: '/camps',
     name: 'Camps Index',
     component: CampsIndex
+  },
+  {
+    path : '/camps/new',
+    name : 'Camps Create',
+    component : CampsCreate
   },
   {
     path: '/camps/:id',

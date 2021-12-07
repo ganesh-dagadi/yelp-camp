@@ -2,6 +2,7 @@
   <div class="home">
     <p>{{msg}}</p>
     <h1> User dashboard </h1>
+    <router-link :to="{name : 'Camps Create'}">Create a post</router-link>
   </div>
 </template>
 
