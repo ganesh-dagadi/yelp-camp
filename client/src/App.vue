@@ -14,7 +14,8 @@
       </div>
     </div>
   </nav>
-
+    <p>{{this.$store.state.auth.refresh_token}}</p>
+    <p>{{this.$store.state.auth.access_token}}</p>
     <p> {{this.$store.state.general.error}}</p>
     <p> {{this.$store.state.general.msg}}</p>
 

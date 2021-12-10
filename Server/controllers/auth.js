@@ -29,7 +29,7 @@ module.exports.loginUser = async(req , res , next)=>{
             },
             process.env.JWT_ACCESS_SECRET,
             {
-                expiresIn : 1200
+                expiresIn : 60
             }
         )
         

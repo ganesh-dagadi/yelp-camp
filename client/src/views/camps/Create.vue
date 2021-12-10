@@ -35,19 +35,20 @@
 
 <script>
 // @ is an alias to /src
-import axios from "axios";
+import axios_instance from "../../config/axios_config";
+import axios from "axios"
 export default {
   name: 'UserIndex',
   data(){
     return {
       msg : this.$route.query.msg,
-      title : 'title',
+      title : '',
       descp : '',
       text: '',
       image : {},
       numImages : 0,
       imageContent : '',
-      imageURL : 'hihi',
+      imageURL : '',
       cloudName: 'dxm68x3tm',
       uploadPreset : 'eumctncn',
     }
@@ -56,7 +57,6 @@ export default {
       submitForm(event){
           event.preventDefault()
           this.cloudinaryUpload()
-        //   this.API_upload()
       },
       handleFileChange : function (event){
           this.image = event.target.files[0];
@@ -75,29 +75,44 @@ export default {
           }
       },
       async cloudinaryUpload(){
-          const uploadData = {
-              file : this.imageContent,
-              upload_preset : this.uploadPreset,
-              folder : 'Yelp_Camp'
-          }
-
+          const uploadData = new FormData()
+          uploadData.append('file' , this.imageContent);
+          uploadData.append('upload_preset' , this.uploadPreset);
+          uploadData.append('folder' , 'Yelp_Camp')
          try{
-           const res = await axios.post(`https://api.cloudinary.com/v1_1/dxm68x3tm/upload` , uploadData)
+        const res = await axios({
+            method : "post",
+            url : `https://api.cloudinary.com/v1_1/${this.cloudName}/upload`,
+             transformRequest : [(data , headers)=>{
+                delete headers.common.access_token
+                delete headers.common.refresh_token
+                return data
+            }],
+            data : uploadData,
+        })
            this.imageURL = res.data.secure_url
+           this.API_upload()
          }catch(err){
              console.log(err)
          }          
           
       },
-    //   async API_upload(){
-    //       const postData = {
-    //           title : this.title,
-    //           descp : this.descp,
-    //           text : this.text,
-    //           image : this.imageURL
-    //       }
-    //       axios.post()
-    //   }
+      async API_upload(){
+          const postData = {
+              title : this.title,
+              descp : this.descp,
+              text : this.text,
+              image : this.imageURL
+          }
+          axios_instance.post('/camps' , postData)
+          .then(res=>{
+              console.log(res , 'in response of create post')
+              this.$router.push(`/?${res.status}`)
+          })
+          .catch(err=>{
+              console.log(err,  'in error of create post')
+          })
+      }
   }
 }
 </script>

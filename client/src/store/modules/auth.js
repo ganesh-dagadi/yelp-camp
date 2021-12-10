@@ -1,5 +1,5 @@
-import axios from "axios"
 import router from "../../router"
+import axios_instance from "../../config/axios_config"
 
 const state = {
     user : {
@@ -16,7 +16,7 @@ const getters = {
 
 const actions = {
      logInUser({commit} , user){
-        axios.post('/auth/login' , user)
+        axios_instance.post('/auth/login' , user)
         .then(res=>{
             if(res){
                 commit('setLoggedInUser' , res)
@@ -28,7 +28,7 @@ const actions = {
         }) 
     },
     logOutUser({commit}){
-        axios.get('/auth/logout')
+        axios_instance.get('/auth/logout')
         .then(res=>{
             if(res){
                 localStorage.removeItem('auth_data')
@@ -42,7 +42,9 @@ const actions = {
 }
 
 const mutations = {
-    setAccessToken : (state , token) => state.access_token = token,
+    setAccessToken : (state , token) => {
+        state.access_token = token
+    },
     setLoggedInUser : (state , response)=> {
         state.user = response.data.user
         state.isLoggedIn = true
@@ -55,7 +57,6 @@ const mutations = {
         state.isLoggedIn = false;
         state.access_token = '';
         state.refresh_token = '';
-
     },
     syncLocalStorage : (state) => {
        const authData = JSON.parse(localStorage.getItem('auth_data'));
@@ -66,6 +67,9 @@ const mutations = {
         state.refresh_token = authData.refresh_token;
        }
        
+    },
+    updateLocalStorage : (state)=>{
+        localStorage.setItem('auth_data' , JSON.stringify(state))
     }
 }
 
