@@ -3,7 +3,6 @@ import router from "../router";
 import store from "../store";
 
 function refreshToken(){
-    console.log('n refresh token')
     return new Promise((resolve , reject)=>{
         axios({
             method : 'GET',
@@ -35,13 +34,12 @@ instance.interceptors.request.use(function (config){
     config.headers.refresh_token = store.state.auth.refresh_token;
     return config
 } , function(error){
-    console.log('error in request interceptor' , error)
+    throw new Error(error)
 })
 
 instance.interceptors.response.use(function(response){
     return response
 } , async function(error){
-    console.log(error)
     const status = error.response.status;
     const originalRequest  = error.config
     if(status == 500) return store.commit('setError' , error.response.error.msg)
@@ -67,51 +65,5 @@ instance.interceptors.response.use(function(response){
     }
     return Promise.reject(error)
 })
-
-// function refreshToken(){
-//     return new Promise((resolve , reject)=>{
-//         return axios.get('/auth/newToken')
-//         .then(res=>{
-//             console.log(res , 'in refreshToken response')
-//             resolve(res)
-//         })
-//         .catch(err=>{
-//             reject(err)
-//         })
-//     })
-// }
-
-// axios_config.interceptorSetter = function (){
-//     axios.interceptors.response.use(response=>{
-//         return Promise.resolve(response)
-//     } ,
-//     error=>{
-//         console.log(error.response)
-//         const status = error.response.status;
-//         const originalRequest = error.config
-//         console.log('in error of axios response')
-        
-
-//         if(status == 401){
-//             console.log("processing 401")
-//             if(!store.state.auth.refresh_token) return router.push('/login')
-//             refreshToken()
-//             .then(response=>{
-//                 console.log(response , 'after refreshing token')
-//                 store.commit('setAccessToken' , response.data.auth.access_token)
-//                 store.commit('updateLocalStorage')
-//                 return Promise.resolve(originalRequest)
-//             })
-//             .catch(err=>{
-//                 return  Promise.reject(err)
-//             })
-//         }
-//         console.log("at end of interceptor")
-//     })
-// }
-
-
-
-
 
 export default instance;

@@ -29,7 +29,7 @@ module.exports.loginUser = async(req , res , next)=>{
             },
             process.env.JWT_ACCESS_SECRET,
             {
-                expiresIn : 60
+                expiresIn : 1200
             }
         )
         
@@ -61,7 +61,7 @@ module.exports.newToken = async(req, res , next)=>{
             const accessToken = jwt.sign(
                 {_id : tokenData._id},
                 process.env.JWT_ACCESS_SECRET,
-                {expiresIn : 60})
+                {expiresIn : 1200})
 
             res.status(200).json({auth : {accessToken : accessToken}})
        }catch(err){

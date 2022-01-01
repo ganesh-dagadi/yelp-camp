@@ -36,7 +36,7 @@ const actions = {
                 router.push(`/?msg=${res.data.success.msg}`)
             }
         }).catch(err=>{
-            console.log(err)
+            router.push(`/error?err=${err.status}`)
         })
     },
 }

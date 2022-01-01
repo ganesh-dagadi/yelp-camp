@@ -6,7 +6,7 @@ exports.getCamp = async (req , res , next)=>{
     try{
        const foundCamp = await Camp.findById(campId)
        if(!foundCamp) return res.status(404).json({error : "Resource not found" , user : req.user});
-       res.status(200).json({data : foundCamp , user : req.user});
+       res.status(200).json({camp : foundCamp , user : req.user});
     }catch(err){
         next(err)
     }
@@ -18,7 +18,7 @@ exports.createCamp = async(req, res , next)=>{
     campData.author = req.user._id;
     try{
         const createdCamp = await Camp.create(campData);
-        res.status(200).json({data : createdCamp , user : req.user});
+        res.status(200).json({camp : createdCamp , user : req.user});
     }catch(err){
         next(err)
     }
@@ -32,6 +32,7 @@ exports.updateCamp = async(req , res , next)=>{
         if(!foundCamp) return res.status(404).json({error : {msg :"Resource not found" }, user : req.user});
         try{
             await Camp.findByIdAndUpdate(campId , campData);
+            console.log('hit')
             res.status(200).json({msg : "Successfully updated" , user : req.user})
         }catch(err2){
             next(err2)
@@ -61,7 +62,7 @@ exports.deleteCamp = async (req , res , next)=>{
 exports.getAllCamps = async (req,  res , next)=>{
     try{
         const allCamps = await Camp.find();
-        res.status(200).json({data : allCamps , user : req.user})
+        res.status(200).json({camps : allCamps , user : req.user})
     }catch(err){
         next(err)
     }

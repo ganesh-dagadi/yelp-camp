@@ -27,7 +27,6 @@
             
             
         </form>
-        <p> image {{imageURL}}</p>
     </div>
 
    
@@ -50,7 +49,7 @@ export default {
       imageContent : '',
       imageURL : '',
       cloudName: 'dxm68x3tm',
-      uploadPreset : 'eumctncn',
+      uploadPreset : 'eumctncn'
     }
   },
   methods:{
@@ -80,7 +79,7 @@ export default {
           uploadData.append('upload_preset' , this.uploadPreset);
           uploadData.append('folder' , 'Yelp_Camp')
          try{
-        const res = await axios({
+            const res = await axios({
             method : "post",
             url : `https://api.cloudinary.com/v1_1/${this.cloudName}/upload`,
              transformRequest : [(data , headers)=>{
